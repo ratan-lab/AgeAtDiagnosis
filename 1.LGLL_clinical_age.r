@@ -82,9 +82,7 @@ normal <- left_join(normal.blood, normal.demo, by = "SEQN") |>
 
 cat("NHANES reference N =", nrow(normal), "\n")
 
-## CBC variables to analyse. The index convention c(2, seq(5, ncol-3)) matches
-## the original analysis pipeline exactly; changing it would alter which variables
-## are included and break reproducibility of published results.
+## CBC variables to analyse.
 vars <- sort(colnames(normal)[c(2, seq(5, (ncol(normal) - 3)))])
 
 ################################################################################
@@ -345,12 +343,8 @@ if (nrow(subsamp.df) > 0) {
 ################################################################################
 ## Step 5. Age-adjusted z-scores (vs NHANES)  →  Figure 1C
 ################################################################################
-## Data entry errors identified in chart review: RegID 2132 (ANC likely mis-entered
-## as cells/µL instead of ×10³/µL), RegID 1905 (multiple impossible values).
-
 patient.sex <- patient |>
   mutate(Sex = cli.new$Sex, RegID = cli.new$RegID) |>
-  filter(!RegID %in% c(2132L, 1905L)) |>
   dplyr::select(-RegID)
 
 zscore.rows <- list()
