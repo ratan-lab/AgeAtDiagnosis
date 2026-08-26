@@ -208,20 +208,9 @@ panel_a <- ccr2_df |>
   labs(x = NULL, y = "Age at diagnosis (years)") +
   my_theme
 
-panel_b <- ggplot() +
-  annotate("rect", xmin = 0.05, xmax = 0.95, ymin = 0.1, ymax = 0.9,
-           fill = "grey93", colour = "grey70", linewidth = 0.4) +
-  annotate("text", x = 0.5, y = 0.65,
-           label = "Sanger sequencing trace",
-           size = 2.8, colour = "grey45", fontface = "italic") +
-  annotate("text", x = 0.5, y = 0.50,
-           label = "CCR2 3'-UTR  chr3:46400346 C>T",
-           size = 2.3, colour = "grey45") +
-  annotate("text", x = 0.5, y = 0.35,
-           label = "(chromatogram placeholder)",
-           size = 2.0, colour = "grey60") +
-  theme_void() +
-  coord_cartesian(xlim = c(0, 1), ylim = c(0, 1))
+
+panel_b_img <- magick::image_read_pdf("data/CCR2.pdf", density = 300)
+panel_b <- cowplot::ggdraw() + cowplot::draw_image(panel_b_img)
 
 ggsave("figure5.tiff",
        panel_a + panel_b +
